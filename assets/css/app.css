@@ -17,3 +17,12 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+#layer-chart {
+    position: fixed;
+    z-index: 1;
+    left: 20px;
+    /* top: 100px; */
+    width: 600px;
+    bottom: 20px;
+}

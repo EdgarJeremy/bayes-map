@@ -75,7 +75,7 @@ function initMap() {
 
     var $cancelEdit = $('.cancel-edit');
 
-    $cancelEdit.on('click', function(e){
+    $cancelEdit.on('click', function (e) {
         var latLng = new google.maps.LatLng(centerManado.lat, centerManado.lng);
         $editOverlay.show();
         $editPreview.find('input[name="nama"]').val('');
@@ -89,9 +89,9 @@ function initMap() {
     });
 
     var $deleteBtn = $('.delete-btn');
-    $deleteBtn.on('click', function(e){
+    $deleteBtn.on('click', function (e) {
         var confirmed = confirm('Anda yakin ingin menghapus tempat?');
-        if(confirmed) {
+        if (confirmed) {
             return true;
         } else {
             e.preventDefault();
@@ -100,12 +100,68 @@ function initMap() {
     });
 
     var $ticketBtn = $('.ticket-btn');
-    $ticketBtn.on('click', function(e){
+    $ticketBtn.on('click', function (e) {
         var $ticketModal = $('#ticketModal');
         var data = $(this).data().data;
         $ticketModal.modal('show');
         $ticketModal.find('input#id_tempat').val(data.id_tempat);
-        $ticketModal.find('input#nama').val(data.nama_tempat);
+        $ticketModal.find('input#nama').val(data.nama);
         $ticketModal.find('textarea#deskripsi').val(data.deskripsi);
     });
+
+    initChart();
+}
+
+function initChart() {
+
+    fetch('../apis/chart_bar_tempat.php', { credentials: 'include' }).then(function(response) { return response.json() })
+        .then(function(data){
+            console.log(data);
+            /** Bar chart */
+            Highcharts.chart('bar-chart', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Statistik kunjungan tempat wisata anda'
+                },
+                subtitle: {
+                    text: 'Hasil chart adalah hitungan keseluruhan tiket yang terjual'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total tiket terjual'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y} tiket'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> tiket terjual<br/>'
+                },
+
+                series: [
+                    {
+                        name: "Tempat Wisata",
+                        colorByPoint: true,
+                        data: data
+                    }
+                ]
+            });
+        });
 }

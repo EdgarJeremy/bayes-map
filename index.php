@@ -1,5 +1,8 @@
 <?php
 require_once './core/autoload.php';
+$stmt = $conn->prepare('SELECT *,  SUM(`kunjungan`.`total`) AS `total` FROM `tempat` LEFT JOIN `kunjungan` ON `tempat`.`id_tempat` = `kunjungan`.`id_tempat` GROUP BY `tempat`.`id_tempat` ORDER BY `total` DESC');
+$stmt->execute();
+$list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +18,7 @@ require_once './core/autoload.php';
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     <!-- Google Maps Javascript API (AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE) -->
-    <script src="./assets/js/gmaps.js"></script>
-    <script src="./assets/js/app.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE&callback=initMap" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highstock/6.0.3/highstock.js"></script>
 </head>
 <body>
 
@@ -53,14 +54,16 @@ require_once './core/autoload.php';
 
     <div id="layer-place">
         <div class="card">
-            <h4 class="card-header"><span class="oi oi-map-marker"></span> Tempat Wisata</h4>
+            <!-- <h4 class="card-header"><span class="oi oi-map-marker"></span> Tempat Wisata</h4> -->
             <div class="card-body">
+                <button data-toggle="modal" data-target=".bar-chart-modal" type="button" class="btn btn-block btn-lg btn-secondary"><span class="oi oi-bar-chart"></span> Statistik Keseluruhan</button><hr />
                 <ul class="list-group">
-                    <a href="#" class="list-group-item active">Cras justo odio</a>
-                    <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item">Morbi leo risus</a>
-                    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item">Vestibulum at eros</a>
+                    <?php foreach($list_tempat as $i=>$tempat):?>
+                    <a href="#" class="list-group-item btn-tempat" data-data='<?php echo json_encode($tempat); ?>'>
+                        <b>#<?php echo $i+1; ?>. <?php echo $tempat->nama; ?></b>
+                        <p style="color: #000000; margin: 0; padding: 0"><?php echo $tempat->deskripsi; ?></p>
+                    </a>
+                    <?php endforeach;?>
                 </ul>
             </div>
         </div>
@@ -68,5 +71,24 @@ require_once './core/autoload.php';
 
     <div id="map"></div>
 
+    <div id="layer-chart">
+        <div class="card">
+            <div class="card-body">
+                <div id="line-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bar-chart-modal" tabindex="2" role="dialog" aria-labelledby="bar-chart-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div id="bar-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE&callback=initMap" async defer></script>
+    <script src="./assets/js/gmaps.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>

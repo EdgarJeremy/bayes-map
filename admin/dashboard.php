@@ -40,12 +40,30 @@ if(isset($_POST['btnEditSubmit'])) {
 }
 /** Ticket */
 if(isset($_POST['btnTicketSubmit'])) {
-    dd($_POST);
+    if(isset($_POST['id_tempat']) && isset($_POST['tanggal']) && isset($_POST['total'])) {
+        $stmt = $conn->prepare('SELECT * FROM `kunjungan` WHERE `id_tempat` = :id_tempat AND DATE(`tanggal`) = :tanggal');
+        $stmt->execute(['id_tempat' => $_POST['id_tempat'], 'tanggal' => $_POST['tanggal']]);
+        $kunjungan = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($kunjungan) {
+            redirect('./dashboard.php');
+        } else {
+            $stmt = $conn->prepare('INSERT INTO `kunjungan`(`id_tempat`, `tanggal`, `total`) VALUES(:id_tempat, :tanggal, :total)');
+            if($stmt->execute(['id_tempat' => $_POST['id_tempat'], 'tanggal' => $_POST['tanggal'], 'total' => $_POST['total']])) {
+                redirect('./dashboard.php?successticket');
+            } else {
+                redirect('./dashboard.php');
+            }
+        }
+    } else {
+        redirect('./dashboard.php');
+    }
 }
 ?>
 
 <main role="main" class="container">
-    <h2>Tempat wisata anda</h2>
+    <div id="bar-chart"></div>
+    <hr />
+    <h4>Tempat wisata anda</h4>
     <hr />
     <?php if(isset($_GET['success'])):?>
         <div class="alert alert-success" role="alert">
@@ -60,6 +78,11 @@ if(isset($_POST['btnTicketSubmit'])) {
     <?php if(isset($_GET['successdelete'])):?>
         <div class="alert alert-success" role="alert">
             Tempat berhasil dihapus
+        </div>
+    <?php endif;?>
+    <?php if(isset($_GET['successticket'])):?>
+        <div class="alert alert-success" role="alert">
+            Data kunjungan tersimpan
         </div>
     <?php endif;?>
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">
@@ -185,7 +208,7 @@ if(isset($_POST['btnTicketSubmit'])) {
                     </div>
                     <div class="form-group">
                         <label for="total">Total Kunjungan</label>
-                        <input name="total" id="total" type="number" class="form-control" />
+                        <input name="total" id="total" type="number" class="form-control" required/>
                     </div>
                     <hr />
                 </div>

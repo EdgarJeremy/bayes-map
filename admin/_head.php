@@ -21,6 +21,7 @@ if(!isset($_SESSION['id_admin'])) redirect('./login.php?error=Anda harus login')
         <link rel="stylesheet" href="../assets/css/dashboard.css" />
         
         <script src="../assets/js/gmaps.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highstock/6.0.3/highstock.js"></script>
     </head>
 
     <body>
