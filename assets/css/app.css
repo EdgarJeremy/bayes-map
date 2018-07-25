@@ -1,0 +1,19 @@
+#map {
+    height: 100%;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#layer-place {
+    position: fixed;
+    z-index: 1;
+    right: 20px;
+    top: 100px;
+    width: 400px;
+}
+#layer-place .card-header h4 {
+    margin: 0;
+    padding: 0;
+}
