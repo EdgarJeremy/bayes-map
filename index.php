@@ -73,6 +73,9 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
 
     <div id="layer-chart">
         <div class="card">
+            <div class="card-header">
+                <span id="close" class="oi oi-circle-x float-right" style="cursor: pointer; color: red"></span>
+            </div>
             <div class="card-body">
                 <div id="line-chart"></div>
             </div>
@@ -87,7 +90,7 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
         </div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE"></script>
     <script src="./assets/js/gmaps.js"></script>
     <script src="./assets/js/app.js"></script>
 </body>

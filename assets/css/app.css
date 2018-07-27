@@ -25,4 +25,5 @@ html, body {
     /* top: 100px; */
     width: 600px;
     bottom: 20px;
+    display: none;
 }
