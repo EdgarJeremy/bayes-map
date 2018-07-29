@@ -90,7 +90,7 @@ if(isset($_POST['btnTicketSubmit'])) {
     </button>
     <hr />
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -120,7 +120,7 @@ if(isset($_POST['btnTicketSubmit'])) {
                 </tbody>
             </table>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div id="preview">
                 <div id="overlay">
                     <h3 class="text-center p-5"><span class="oi oi-arrow-left"></span> Pilih tempat</h3>
@@ -146,6 +146,7 @@ if(isset($_POST['btnTicketSubmit'])) {
         </div>
     </div>
 </main>
+<hr />
 
         <!-- Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">

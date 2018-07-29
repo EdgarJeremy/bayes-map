@@ -44,10 +44,10 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
                     </li>
                     <?php endif; ?>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
+                <!-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Cari Tempat.." aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cari</button>
-                </form>
+                </form> -->
             </div>
         </div>
     </nav>
@@ -86,6 +86,9 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div id="bar-chart"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
