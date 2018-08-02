@@ -26,6 +26,7 @@ $(document).ready(function(){
         $(this).addClass('active').find('p').css({'color': '#fff'});
 
         showLineChart(data.id_tempat);
+        showMeta(data.id_tempat);
         marker.setPosition(new google.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)));
         map.setCenter(parseFloat(data.latitude), parseFloat(data.longitude));
         e.preventDefault();
@@ -35,6 +36,16 @@ $(document).ready(function(){
     var $layerChart = $('#layer-chart');
     var $layerChartCloseBtn = $('#layer-chart #close');
     $layerChartCloseBtn.on('click', closeLineChart);
+
+    var $showMore = $('.show-more');
+    $showMore.on('click', function(){
+        var real = $(this).data().real;
+        swal({
+            text: real
+        });
+    });
+
+    var $layerMeta = $('#layer-meta');
 
     function initBarChart() {
         fetch('./apis/chart_bar_tempat.php?all', { credentials: 'include' }).then(function (response) { return response.json() })
@@ -96,6 +107,10 @@ $(document).ready(function(){
                 }
                 // Create the chart
                 Highcharts.stockChart('line-chart', {
+                    chart: {
+                        height: 300
+                    },
+
                     rangeSelector: {
                         selected: 0
                     },
@@ -113,9 +128,29 @@ $(document).ready(function(){
         
     }
 
+    function showMeta(id_tempat) {
+        fetch('./apis/meta.php?id_tempat=' + id_tempat).then(function(res){ return res.json(); })
+            .then(function(data){
+                $layerMeta.show();
+                var $tbody = $layerMeta.find('.card-body');
+                var $hariRamai = $('#layer-meta #ramai');
+                $hariRamai.text(data[0].hari);
+                $tbody.html('');
+                data.forEach(function(item, i){
+                    $tbody.append(`
+                        <li class="list-group-item">
+                            <b>#${i + 1}</b>. Hari : ${item.hari}, Kunjungan : ${item.kunjungan} tiket
+                        </li>
+                    `);
+                });
+                console.log(data);
+            });
+    }
+
     function closeLineChart() {
         $btnTempat.removeClass('active').find('p').css({'color': '#000'});
         $layerChart.hide();
+        $layerMeta.hide();
         marker.setVisible(false);
         map.setCenter(parseFloat(centerManado.lat), parseFloat(centerManado.lng));
     }

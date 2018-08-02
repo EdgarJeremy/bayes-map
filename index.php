@@ -19,6 +19,7 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     <!-- Google Maps Javascript API (AIzaSyAycCLQBE72kLbRXBqfCkRpMuwxFaeyIzE) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highstock/6.0.3/highstock.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.9/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -52,17 +53,28 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
         </div>
     </nav>
 
+    <div id="layer-meta">
+        <div class="card">
+            <h6 class="card-header">Hari Paling Ramai : <span id="ramai"></span></h6>
+            <div class="card-body">
+                <ul class="list-group">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div id="layer-place">
         <div class="card">
             <!-- <h4 class="card-header"><span class="oi oi-map-marker"></span> Tempat Wisata</h4> -->
             <div class="card-body">
-                <button data-toggle="modal" data-target=".bar-chart-modal" type="button" class="btn btn-block btn-lg btn-secondary"><span class="oi oi-bar-chart"></span> Statistik Keseluruhan</button><hr />
+                <button data-toggle="modal" data-target=".bar-chart-modal" type="button" class="btn btn-block btn-secondary"><span class="oi oi-bar-chart"></span> Statistik Keseluruhan</button><hr />
                 <ul class="list-group">
                     <?php foreach($list_tempat as $i=>$tempat):?>
-                    <a href="#" class="list-group-item btn-tempat" data-data='<?php echo json_encode($tempat); ?>'>
+                    <li href="#" class="list-group-item btn-tempat" data-data='<?php echo json_encode($tempat); ?>'>
                         <b>#<?php echo $i+1; ?>. <?php echo $tempat->nama; ?></b>
-                        <p style="color: #000000; margin: 0; padding: 0"><?php echo $tempat->deskripsi; ?></p>
-                    </a>
+                        <p style="color: #000000; margin: 0; padding: 0"><?php echo shortify($tempat->deskripsi, 30); ?></p>
+                    </li>
                     <?php endforeach;?>
                 </ul>
             </div>

@@ -103,7 +103,7 @@ if(isset($_POST['btnTicketSubmit'])) {
                     <tr>
                         <td>
                             <b><?php echo $tempat->nama; ?></b><br />
-                            <?php echo $tempat->deskripsi; ?>
+                            <?php echo shortify($tempat->deskripsi, 30); ?>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary edit-btn" data-id="<?php echo $tempat->id_tempat; ?>"><span class="oi oi-pencil"></span></button>

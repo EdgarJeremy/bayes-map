@@ -109,6 +109,14 @@ function initMap() {
         $ticketModal.find('textarea#deskripsi').val(data.deskripsi);
     });
 
+    var $showMore = $('.show-more');
+    $showMore.on('click', function(){
+        var real = $(this).data().real;
+        swal({
+            text: real
+        });
+    });
+
     initChart();
 }
 
@@ -116,7 +124,6 @@ function initChart() {
 
     fetch('../apis/chart_bar_tempat.php', { credentials: 'include' }).then(function(response) { return response.json() })
         .then(function(data){
-            console.log(data);
             /** Bar chart */
             Highcharts.chart('bar-chart', {
                 chart: {

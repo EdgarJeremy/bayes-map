@@ -32,3 +32,23 @@ if(!function_exists('sendJson')) {
         exit();
     }
 }
+
+/**
+ * Shortify String
+ */
+if(!function_exists('shortify')) {
+    function shortify($str = "", $limit, $link = true) {
+        $real = $str;
+        $str = strip_tags($str);
+        if(strlen($str) > $limit) {
+            $strCut = substr($str, 0, $limit);
+            $endPoint = strrpos($strCut, ' ');
+            $str = $endPoint ? substr($strCut, 0, $endPoint) : substr($strCut, 0);
+            if($link)
+                $str .= '...[<a href="#" data-real="'.$real.'" class="show-more">Lengkap</a>]';
+            else
+                $str .= '...';
+        }
+        return $str;
+    }
+}
