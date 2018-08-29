@@ -3,6 +3,8 @@ require_once './core/autoload.php';
 $stmt = $conn->prepare('SELECT *,  SUM(`kunjungan`.`total`) AS `total` FROM `tempat` LEFT JOIN `kunjungan` ON `tempat`.`id_tempat` = `kunjungan`.`id_tempat` GROUP BY `tempat`.`id_tempat` ORDER BY `total` DESC');
 $stmt->execute();
 $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
+$visits = getVisits();
+trackVisit();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,17 +55,6 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
         </div>
     </nav>
 
-    <div id="layer-meta">
-        <div class="card">
-            <h6 class="card-header">Hari Paling Ramai : <span id="ramai"></span></h6>
-            <div class="card-body">
-                <ul class="list-group">
-
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <div id="layer-place">
         <div class="card">
             <!-- <h4 class="card-header"><span class="oi oi-map-marker"></span> Tempat Wisata</h4> -->
@@ -81,7 +72,40 @@ $list_tempat = $stmt->fetchAll(PDO::FETCH_CLASS);
         </div>
     </div>
 
+    <div id="layer-visits">
+        <div class="card">
+            <h6 class="card-header">Kunjungan Web</h6>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <tr>
+                        <td>Hari Ini</td>
+                        <td><b><?php echo $visits['today']; ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td><b><?php echo $visits['total']; ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>Total Klik</td>
+                        <td><b><?php echo $visits['click']; ?></b></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div id="map"></div>
+
+    <div id="layer-meta">
+        <div class="card">
+            <h6 class="card-header">Hari Paling Ramai : <span id="ramai"></span></h6>
+            <div class="card-body">
+                <ul class="list-group">
+
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <div id="layer-chart">
         <div class="card">

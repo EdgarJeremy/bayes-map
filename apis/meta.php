@@ -19,6 +19,7 @@ if(isset($_GET['id_tempat'])) {
     foreach($data as $i=>$item){
         $data[$i]['hari'] = $hari[$data[$i]['hari']];
     }
+    trackVisit();
 
     sendJson($data);
 }
